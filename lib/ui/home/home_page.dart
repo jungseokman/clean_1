@@ -19,8 +19,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final TextEditingController controller = TextEditingController();
 
-  List<Photo> _photos = [];
-
   @override
   void dispose() {
     super.dispose();
@@ -51,32 +49,39 @@ class _HomePageState extends State<HomePage> {
                 ),
                 suffixIcon: IconButton(
                   onPressed: () async {
-                    final photo = await photoProvier.api.fetch(controller.text);
-                    setState(() {
-                      _photos = photo;
-                    });
+                    photoProvier.fetch(controller.text);
                   },
                   icon: const Icon(Icons.search),
                 ),
               ),
             ),
           ),
-          Expanded(
-              child: GridView.builder(
-            padding: const EdgeInsets.all(16),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-            ),
-            itemBuilder: (context, index) {
-              final photo = _photos[index];
-              return PhotoWidget(
-                photo: photo,
-              );
-            },
-            itemCount: _photos.length,
-          ))
+          StreamBuilder<List<Photo>>(
+              stream: photoProvier.photoStream,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const CircularProgressIndicator();
+                }
+
+                final photos = snapshot.data!;
+
+                return Expanded(
+                    child: GridView.builder(
+                  padding: const EdgeInsets.all(16),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                  ),
+                  itemBuilder: (context, index) {
+                    final photo = photos[index];
+                    return PhotoWidget(
+                      photo: photo,
+                    );
+                  },
+                  itemCount: photos.length,
+                ));
+              })
         ],
       ),
     );
