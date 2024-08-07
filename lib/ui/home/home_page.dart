@@ -1,8 +1,4 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:image_search/data/api.dart';
 import 'package:image_search/data/photo_provider.dart';
 import 'package:image_search/model/photo.dart';
 import 'package:image_search/ui/widgets/photo_widget.dart';
@@ -27,7 +23,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final photoProvier = PhotoProvider.of(context);
+    final viewModel = PhotoProvider.of(context).viewModel;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -49,7 +45,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 suffixIcon: IconButton(
                   onPressed: () async {
-                    photoProvier.fetch(controller.text);
+                    viewModel.fetch(controller.text);
                   },
                   icon: const Icon(Icons.search),
                 ),
@@ -57,7 +53,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           StreamBuilder<List<Photo>>(
-              stream: photoProvier.photoStream,
+              stream: viewModel.photoStream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const CircularProgressIndicator();

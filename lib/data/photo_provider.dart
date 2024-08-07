@@ -1,20 +1,14 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:image_search/data/api.dart';
-import 'package:image_search/model/photo.dart';
+import 'package:image_search/ui/home_view_model.dart';
 
 class PhotoProvider extends InheritedWidget {
-  PhotoProvider({
+  final HomeViewModel viewModel;
+
+  const PhotoProvider({
     super.key,
     required super.child,
-    required this.api,
+    required this.viewModel,
   });
-
-  final _photoStreamController = StreamController<List<Photo>>()..add([]);
-  Stream<List<Photo>> get photoStream => _photoStreamController.stream;
-
-  final PixabayApi api;
 
   static PhotoProvider of(BuildContext context) {
     final PhotoProvider? result =
@@ -23,13 +17,8 @@ class PhotoProvider extends InheritedWidget {
     return result!;
   }
 
-  Future<void> fetch(String query) async {
-    final result = await api.fetch(query);
-    _photoStreamController.add(result);
-  }
-
   @override
   bool updateShouldNotify(PhotoProvider oldWidget) {
-    return oldWidget.api != api;
+    return true;
   }
 }

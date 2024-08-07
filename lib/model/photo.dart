@@ -142,4 +142,21 @@ class Photo {
     data["userImageURL"] = userImageUrl;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'Photo(id: $id)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Photo && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode;
+  }
 }
