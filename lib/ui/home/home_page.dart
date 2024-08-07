@@ -2,11 +2,15 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_search/data/api.dart';
+import 'package:image_search/data/photo_provider.dart';
 import 'package:image_search/model/photo.dart';
 import 'package:image_search/ui/widgets/photo_widget.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({
+    super.key,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -17,16 +21,6 @@ class _HomePageState extends State<HomePage> {
 
   List<Photo> _photos = [];
 
-  Future<List<Photo>> fetch(String query) async {
-    final dio = Dio();
-    final response = await dio.get(
-        "https://pixabay.com/api/?key=45304690-5ab2d77aa4c7f6783fd3b9b9d&q=$query&image_type=photo");
-
-    Iterable hits = response.data['hits'];
-
-    return hits.map((e) => Photo.fromJson(e)).toList();
-  }
-
   @override
   void dispose() {
     super.dispose();
@@ -35,6 +29,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final photoProvier = PhotoProvider.of(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -55,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 suffixIcon: IconButton(
                   onPressed: () async {
-                    final photo = await fetch(controller.text);
+                    final photo = await photoProvier.api.fetch(controller.text);
                     setState(() {
                       _photos = photo;
                     });
