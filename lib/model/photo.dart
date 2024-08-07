@@ -1,39 +1,42 @@
-class Photo {
-  late int id;
-  late String pageUrl;
-  late String type;
-  late String tags;
-  late String previewUrl;
-  late int previewWidth;
-  late int previewHeight;
-  late String webformatUrl;
-  late int webformatWidth;
-  late int webformatHeight;
-  late String largeImageUrl;
-  late int imageWidth;
-  late int imageHeight;
-  late int imageSize;
-  late int views;
-  late int downloads;
-  late int collections;
-  late int likes;
-  late int comments;
-  late int userId;
-  late String user;
-  late String userImageUrl;
+import 'dart:convert';
 
-  Photo({
+import 'package:equatable/equatable.dart';
+
+class Photo extends Equatable {
+  final int id;
+  final String pageURL;
+  final String type;
+  final String tags;
+  final String previewURL;
+  final int previewWidth;
+  final int previewHeight;
+  final String webformatURL;
+  final int webformatWidth;
+  final int webformatHeight;
+  final String largeImageURL;
+  final int imageWidth;
+  final int imageHeight;
+  final int imageSize;
+  final int views;
+  final int downloads;
+  final int collections;
+  final int likes;
+  final int comments;
+  final int userId;
+  final String user;
+  final String userImageURL;
+  const Photo({
     required this.id,
-    required this.pageUrl,
+    required this.pageURL,
     required this.type,
     required this.tags,
-    required this.previewUrl,
+    required this.previewURL,
     required this.previewWidth,
     required this.previewHeight,
-    required this.webformatUrl,
+    required this.webformatURL,
     required this.webformatWidth,
     required this.webformatHeight,
-    required this.largeImageUrl,
+    required this.largeImageURL,
     required this.imageWidth,
     required this.imageHeight,
     required this.imageSize,
@@ -44,119 +47,147 @@ class Photo {
     required this.comments,
     required this.userId,
     required this.user,
-    required this.userImageUrl,
+    required this.userImageURL,
   });
 
-  Photo.fromJson(Map<String, dynamic> json) {
-    if (json["id"] is int) {
-      id = json["id"];
-    }
-    if (json["pageURL"] is String) {
-      pageUrl = json["pageURL"];
-    }
-    if (json["type"] is String) {
-      type = json["type"];
-    }
-    if (json["tags"] is String) {
-      tags = json["tags"];
-    }
-    if (json["previewURL"] is String) {
-      previewUrl = json["previewURL"];
-    }
-    if (json["previewWidth"] is int) {
-      previewWidth = json["previewWidth"];
-    }
-    if (json["previewHeight"] is int) {
-      previewHeight = json["previewHeight"];
-    }
-    if (json["webformatURL"] is String) {
-      webformatUrl = json["webformatURL"];
-    }
-    if (json["webformatWidth"] is int) {
-      webformatWidth = json["webformatWidth"];
-    }
-    if (json["webformatHeight"] is int) {
-      webformatHeight = json["webformatHeight"];
-    }
-    if (json["largeImageURL"] is String) {
-      largeImageUrl = json["largeImageURL"];
-    }
-    if (json["imageWidth"] is int) {
-      imageWidth = json["imageWidth"];
-    }
-    if (json["imageHeight"] is int) {
-      imageHeight = json["imageHeight"];
-    }
-    if (json["imageSize"] is int) {
-      imageSize = json["imageSize"];
-    }
-    if (json["views"] is int) {
-      views = json["views"];
-    }
-    if (json["downloads"] is int) {
-      downloads = json["downloads"];
-    }
-    if (json["collections"] is int) {
-      collections = json["collections"];
-    }
-    if (json["likes"] is int) {
-      likes = json["likes"];
-    }
-    if (json["comments"] is int) {
-      comments = json["comments"];
-    }
-    if (json["user_id"] is int) {
-      userId = json["user_id"];
-    }
-    if (json["user"] is String) {
-      user = json["user"];
-    }
-    if (json["userImageURL"] is String) {
-      userImageUrl = json["userImageURL"];
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data["id"] = id;
-    data["pageURL"] = pageUrl;
-    data["type"] = type;
-    data["tags"] = tags;
-    data["previewURL"] = previewUrl;
-    data["previewWidth"] = previewWidth;
-    data["previewHeight"] = previewHeight;
-    data["webformatURL"] = webformatUrl;
-    data["webformatWidth"] = webformatWidth;
-    data["webformatHeight"] = webformatHeight;
-    data["largeImageURL"] = largeImageUrl;
-    data["imageWidth"] = imageWidth;
-    data["imageHeight"] = imageHeight;
-    data["imageSize"] = imageSize;
-    data["views"] = views;
-    data["downloads"] = downloads;
-    data["collections"] = collections;
-    data["likes"] = likes;
-    data["comments"] = comments;
-    data["user_id"] = userId;
-    data["user"] = user;
-    data["userImageURL"] = userImageUrl;
-    return data;
+  @override
+  List<Object> get props {
+    return [
+      id,
+      pageURL,
+      type,
+      tags,
+      previewURL,
+      previewWidth,
+      previewHeight,
+      webformatURL,
+      webformatWidth,
+      webformatHeight,
+      largeImageURL,
+      imageWidth,
+      imageHeight,
+      imageSize,
+      views,
+      downloads,
+      collections,
+      likes,
+      comments,
+      userId,
+      user,
+      userImageURL,
+    ];
   }
 
   @override
   String toString() {
-    return 'Photo(id: $id)';
+    return 'Photo(id: $id, pageURL: $pageURL, type: $type, tags: $tags, previewURL: $previewURL, previewWidth: $previewWidth, previewHeight: $previewHeight, webformatURL: $webformatURL, webformatWidth: $webformatWidth, webformatHeight: $webformatHeight, largeImageURL: $largeImageURL, imageWidth: $imageWidth, imageHeight: $imageHeight, imageSize: $imageSize, views: $views, downloads: $downloads, collections: $collections, likes: $likes, comments: $comments, userId: $userId, user: $user, userImageURL: $userImageURL)';
   }
 
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Photo && other.id == id;
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'pageURL': pageURL,
+      'type': type,
+      'tags': tags,
+      'previewURL': previewURL,
+      'previewWidth': previewWidth,
+      'previewHeight': previewHeight,
+      'webformatURL': webformatURL,
+      'webformatWidth': webformatWidth,
+      'webformatHeight': webformatHeight,
+      'largeImageURL': largeImageURL,
+      'imageWidth': imageWidth,
+      'imageHeight': imageHeight,
+      'imageSize': imageSize,
+      'views': views,
+      'downloads': downloads,
+      'collections': collections,
+      'likes': likes,
+      'comments': comments,
+      'userId': userId,
+      'user': user,
+      'userImageURL': userImageURL,
+    };
   }
 
-  @override
-  int get hashCode {
-    return id.hashCode;
+  factory Photo.fromMap(Map<String, dynamic> map) {
+    return Photo(
+      id: map['id']?.toInt() ?? 0,
+      pageURL: map['pageURL'] ?? '',
+      type: map['type'] ?? '',
+      tags: map['tags'] ?? '',
+      previewURL: map['previewURL'] ?? '',
+      previewWidth: map['previewWidth']?.toInt() ?? 0,
+      previewHeight: map['previewHeight']?.toInt() ?? 0,
+      webformatURL: map['webformatURL'] ?? '',
+      webformatWidth: map['webformatWidth']?.toInt() ?? 0,
+      webformatHeight: map['webformatHeight']?.toInt() ?? 0,
+      largeImageURL: map['largeImageURL'] ?? '',
+      imageWidth: map['imageWidth']?.toInt() ?? 0,
+      imageHeight: map['imageHeight']?.toInt() ?? 0,
+      imageSize: map['imageSize']?.toInt() ?? 0,
+      views: map['views']?.toInt() ?? 0,
+      downloads: map['downloads']?.toInt() ?? 0,
+      collections: map['collections']?.toInt() ?? 0,
+      likes: map['likes']?.toInt() ?? 0,
+      comments: map['comments']?.toInt() ?? 0,
+      userId: map['userId']?.toInt() ?? 0,
+      user: map['user'] ?? '',
+      userImageURL: map['userImageURL'] ?? '',
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Photo.fromJson(String source) => Photo.fromMap(json.decode(source));
+
+  Photo copyWith({
+    int? id,
+    String? pageURL,
+    String? type,
+    String? tags,
+    String? previewURL,
+    int? previewWidth,
+    int? previewHeight,
+    String? webformatURL,
+    int? webformatWidth,
+    int? webformatHeight,
+    String? largeImageURL,
+    int? imageWidth,
+    int? imageHeight,
+    int? imageSize,
+    int? views,
+    int? downloads,
+    int? collections,
+    int? likes,
+    int? comments,
+    int? userId,
+    String? user,
+    String? userImageURL,
+  }) {
+    return Photo(
+      id: id ?? this.id,
+      pageURL: pageURL ?? this.pageURL,
+      type: type ?? this.type,
+      tags: tags ?? this.tags,
+      previewURL: previewURL ?? this.previewURL,
+      previewWidth: previewWidth ?? this.previewWidth,
+      previewHeight: previewHeight ?? this.previewHeight,
+      webformatURL: webformatURL ?? this.webformatURL,
+      webformatWidth: webformatWidth ?? this.webformatWidth,
+      webformatHeight: webformatHeight ?? this.webformatHeight,
+      largeImageURL: largeImageURL ?? this.largeImageURL,
+      imageWidth: imageWidth ?? this.imageWidth,
+      imageHeight: imageHeight ?? this.imageHeight,
+      imageSize: imageSize ?? this.imageSize,
+      views: views ?? this.views,
+      downloads: downloads ?? this.downloads,
+      collections: collections ?? this.collections,
+      likes: likes ?? this.likes,
+      comments: comments ?? this.comments,
+      userId: userId ?? this.userId,
+      user: user ?? this.user,
+      userImageURL: userImageURL ?? this.userImageURL,
+    );
   }
 }

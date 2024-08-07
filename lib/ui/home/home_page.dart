@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:image_search/data/photo_provider.dart';
-import 'package:image_search/model/photo.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_search/ui/bloc/home_view_model_bloc.dart';
 import 'package:image_search/ui/widgets/photo_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,8 +23,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = PhotoProvider.of(context).viewModel;
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -45,39 +43,43 @@ class _HomePageState extends State<HomePage> {
                 ),
                 suffixIcon: IconButton(
                   onPressed: () async {
-                    viewModel.fetch(controller.text);
+                    context
+                        .read<HomeViewModelBloc>()
+                        .add(FetchPhotos(query: controller.text));
                   },
                   icon: const Icon(Icons.search),
                 ),
               ),
             ),
           ),
-          StreamBuilder<List<Photo>>(
-              stream: viewModel.photoStream,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const CircularProgressIndicator();
-                }
+          BlocBuilder<HomeViewModelBloc, HomeViewModelState>(
+              builder: (context, state) {
+            if (state.homeViewModelStatus == HomeViewModelStatus.loading) {
+              return const CircularProgressIndicator();
+            } else if (state.homeViewModelStatus ==
+                HomeViewModelStatus.failure) {
+              return const Text('Failed to load photos');
+            } else {
+              final photos = state.photos;
 
-                final photos = snapshot.data!;
-
-                return Expanded(
-                    child: GridView.builder(
-                  padding: const EdgeInsets.all(16),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                  ),
-                  itemBuilder: (context, index) {
-                    final photo = photos[index];
-                    return PhotoWidget(
-                      photo: photo,
-                    );
-                  },
-                  itemCount: photos.length,
-                ));
-              })
+              return Expanded(
+                  child: GridView.builder(
+                padding: const EdgeInsets.all(16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                ),
+                itemBuilder: (context, index) {
+                  final photo = photos[index];
+                  return PhotoWidget(
+                    photo: photo,
+                  );
+                },
+                itemCount: photos.length,
+              ));
+            }
+          })
         ],
       ),
     );

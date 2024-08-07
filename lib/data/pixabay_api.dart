@@ -17,6 +17,6 @@ class PixabayApi implements PhotoApiRepository {
 
     Iterable hits = jsonDecode(response.body)['hits'];
 
-    return hits.map((e) => Photo.fromJson(e)).toList();
+    return hits.map((e) => Photo.fromMap(e)).toList();
   }
 }
