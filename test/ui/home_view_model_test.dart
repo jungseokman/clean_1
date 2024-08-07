@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:image_search/data/data_source/result.dart';
 import 'package:image_search/domain/repository/photo_api_repository.dart';
 import 'package:image_search/domain/model/photo.dart';
 import 'package:image_search/presentaion/bloc/home_view_model_bloc.dart';
@@ -40,10 +41,10 @@ void main() {
 
 class FakePhotoApiRepository extends PhotoApiRepository {
   @override
-  Future<List<Photo>> fetch(String query) async {
+  Future<Result<List<Photo>>> fetch(String query) async {
     Future.delayed(const Duration(milliseconds: 500));
 
-    return fakePhotos;
+    return Result.success(fakePhotos);
   }
 }
 

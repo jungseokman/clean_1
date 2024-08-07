@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_search/presentaion/bloc/home_view_model_bloc.dart';
-import 'package:image_search/presentaion/widgets/photo_widget.dart';
+import 'package:image_search/presentaion/home/widgets/photo_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -58,7 +58,12 @@ class _HomePageState extends State<HomePage> {
               return const CircularProgressIndicator();
             } else if (state.homeViewModelStatus ==
                 HomeViewModelStatus.failure) {
-              return const Text('Failed to load photos');
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(state.errorMessage)));
+              });
+
+              return const SizedBox();
             } else {
               final photos = state.photos;
 

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:image_search/data/data_source/result.dart';
 
 import 'package:image_search/domain/repository/photo_api_repository.dart';
 import 'package:image_search/domain/model/photo.dart';
@@ -15,14 +16,17 @@ class HomeViewModelBloc extends Bloc<HomeViewModelEvent, HomeViewModelState> {
   }) : super(HomeViewModelState.initial()) {
     on<FetchPhotos>((event, emit) async {
       emit(state.copyWith(homeViewModelStatus: HomeViewModelStatus.loading));
-      try {
-        final photos = await repository.fetch(event.query);
+      final Result<List<Photo>> result = await repository.fetch(event.query);
+
+      result.when(success: (photos) {
         emit(state.copyWith(
             homeViewModelStatus: HomeViewModelStatus.success, photos: photos));
-      } catch (e) {
-        print(e);
-        emit(state.copyWith(homeViewModelStatus: HomeViewModelStatus.failure));
-      }
+      }, error: (e) {
+        emit(state.copyWith(
+          homeViewModelStatus: HomeViewModelStatus.failure,
+          errorMessage: e,
+        ));
+      });
     });
   }
 }
