@@ -2,21 +2,22 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_search/data/data_source/result.dart';
 
-import 'package:image_search/domain/repository/photo_api_repository.dart';
 import 'package:image_search/domain/model/photo.dart';
+import 'package:image_search/domain/usecase/get_photos_usecase.dart';
 
 part 'home_view_model_event.dart';
 part 'home_view_model_state.dart';
 
 class HomeViewModelBloc extends Bloc<HomeViewModelEvent, HomeViewModelState> {
-  final PhotoApiRepository repository;
+  final GetPhotosUsecase getPhotosUsecase;
 
   HomeViewModelBloc({
-    required this.repository,
+    required this.getPhotosUsecase,
   }) : super(HomeViewModelState.initial()) {
     on<FetchPhotos>((event, emit) async {
       emit(state.copyWith(homeViewModelStatus: HomeViewModelStatus.loading));
-      final Result<List<Photo>> result = await repository.fetch(event.query);
+
+      final Result<List<Photo>> result = await getPhotosUsecase(event.query);
 
       result.when(success: (photos) {
         emit(state.copyWith(

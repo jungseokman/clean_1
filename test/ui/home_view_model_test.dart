@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:image_search/data/data_source/result.dart';
 import 'package:image_search/domain/repository/photo_api_repository.dart';
 import 'package:image_search/domain/model/photo.dart';
+import 'package:image_search/domain/usecase/get_photos_usecase.dart';
 import 'package:image_search/presentaion/bloc/home_view_model_bloc.dart';
 
 void main() {
@@ -11,7 +12,8 @@ void main() {
 
   setUp(() {
     repository = FakePhotoApiRepository();
-    bloc = HomeViewModelBloc(repository: repository);
+    bloc = HomeViewModelBloc(
+        getPhotosUsecase: GetPhotosUsecase(repository: repository));
   });
 
   tearDown(() {

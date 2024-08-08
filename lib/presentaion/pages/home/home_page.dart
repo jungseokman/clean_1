@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_search/presentaion/bloc/home_view_model_bloc.dart';
-import 'package:image_search/presentaion/home/widgets/photo_widget.dart';
+import 'package:image_search/presentaion/pages/home/widgets/photo_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
